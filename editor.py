@@ -227,12 +227,25 @@ def main(prefix = None):
             for j in strings[i][1]:
                 decoded.append(j.decode("shift-jis", errors="ignore"))
         else:
-            decoded = strings[i][1].decode("shift-jis", errors="ignore")
+            decoded = [strings[i][1].decode("shift-jis", errors="ignore")]
 
         string_object.append([i, strings[i][0], decoded])
 
     if len(input("Export?: ")) > 0:
-        with open("strings", "w", encoding="utf-8") as f: f.write(json.dumps(string_object, ensure_ascii=False, indent=4))
+        write_object = []
+        for write_string in string_object:
+            if len(write_string[2]) == 1:
+                write_object.append({"num1": write_string[0], "num2": write_string[1], "message": write_string[2][0]})
+            elif len(write_string[2]) == 2:
+                if len(write_string[2][0]) == 0:
+                    # this line has no speaker
+                    write_object.append({"num1": write_string[0], "num2": write_string[1], "message": write_string[2][1]})
+                else:
+                    write_object.append({"num1": write_string[0], "num2": write_string[1], "name": write_string[2][0], "message": write_string[2][1]})
+            else:
+                print(f"Warning: Skipping a line with multiple messages: {write_string}")
+        with open("strings", "w", encoding="utf-8") as f: 
+            f.write(json.dumps(write_object, ensure_ascii=False, indent=4))
 
     if len(input("Import?: ")) > 0:
         with open("strings", "r", encoding="utf-8") as f: string_object = json.loads(f.read())
