@@ -5,7 +5,7 @@ import editor, os
 DEV_MODE = True
 
 def main():
-    temp_folder = "temp"
+    temp_folder = "test"
     main_file_path = input("File name (with .hxp extension): ")
     if not DEV_MODE or len(input("Extract?: ")) > 0:
         extract_file(main_file_path, temp_folder)

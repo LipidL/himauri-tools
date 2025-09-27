@@ -137,7 +137,7 @@ def split_content(content):
     beginning_data = int.from_bytes(content[0x17:0x17 + 2], "big")
     return content[:beginning_data], content[beginning_data:], beginning_data
 
-def parse_data(data, offset_offset):
+def parse_data(data: bytes, offset_offset: int):
     if not data.startswith(b"\x0a\x0d"):
         raise Exception("Invalid start for data")
     entries = []
